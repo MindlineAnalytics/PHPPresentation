@@ -2304,6 +2304,30 @@ class PptCharts extends AbstractDecoratorWriter
         // ##c:spPr
         $objWriter->endElement();
 
+        // c:txPr
+        $objWriter->startElement('c:txPr');
+        $objWriter->writeElement('a:bodyPr', null);
+        $objWriter->writeElement('a:lstStyle', null);
+        // a:p
+        $objWriter->startElement('a:p');
+        // a:pPr
+        $objWriter->startElement('a:pPr');
+        // a:defRPr
+        $objWriter->startElement('a:defRPr');
+        $objWriter->writeAttribute('b', ($oAxis->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($oAxis->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($oAxis->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('sz', ($oAxis->getFont()->getSize() * 100));
+        $objWriter->writeAttribute('u', $oAxis->getFont()->getUnderline());
+        // ##a:defRPr
+        $objWriter->endElement();
+        // ##a:pPr
+        $objWriter->endElement();
+        // ##a:p
+        $objWriter->endElement();
+        // ##c:txPr
+        $objWriter->endElement();
+
         // c:crossAx
         $objWriter->startElement('c:crossAx');
         $objWriter->writeAttribute('val', $crossAxVal);
