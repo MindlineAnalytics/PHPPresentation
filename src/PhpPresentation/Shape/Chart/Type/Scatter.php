@@ -25,6 +25,36 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Scatter extends AbstractTypeLine implements ComparableInterface
 {
     /**
+     * @var bool $flippedAxes
+     */
+    private $flippedAxes = false;
+
+    /**
+     * Get flippedAxes.
+     * 
+     * @return bool
+     */
+    public function getFlippedAxes(): bool
+    {
+        return $this->flippedAxes;
+    }
+
+
+    /**
+     * Sets flippedAxes - if true, the x/y data and references will be flipped.
+     * 
+     * @param bool $flippedAxes
+     * 
+     * @return self
+     */
+    public function setFlippedAxes(bool $flippedAxes): self
+    {
+        $this->flippedAxes = $flippedAxes;
+
+        return $this;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code

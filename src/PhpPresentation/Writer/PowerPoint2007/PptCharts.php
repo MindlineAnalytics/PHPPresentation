@@ -2286,22 +2286,30 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
 
-            // Write X axis data
+            // axis data and references coordinates
             $axisXData = array_keys($series->getValues());
+            $coordsX = $includeSheet ? ($subject->isOnPrimaryAxis() ? 'Sheet1!$A$2:$A$' : 'Sheet1!$B$2:$B$') . (1 + count($axisXData)) : '';
+            $axisYData = array_values($series->getValues());
+            $coordsY = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex($seriesColumnOffset + $seriesIndex) . '$2:$' . Coordinate::stringFromColumnIndex($seriesColumnOffset + $seriesIndex) . '$' . (1 + count($axisYData)) : '');
 
+            // Write X axis data
             // c:xVal
             $objWriter->startElement('c:xVal');
-            $coords = $includeSheet ? ($subject->isOnPrimaryAxis() ? 'Sheet1!$A$2:$A$' : 'Sheet1!$B$2:$B$') . (1 + count($axisXData)) : '';
-            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, $coords);
+            if ($subject->getFlippedAxes()) {
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coordsY);
+            } else {
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, $coordsX);
+            }
             $objWriter->endElement();
 
             // Write Y axis data
-            $axisYData = array_values($series->getValues());
-
             // c:yVal
             $objWriter->startElement('c:yVal');
-            $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex($seriesColumnOffset + $seriesIndex) . '$2:$' . Coordinate::stringFromColumnIndex($seriesColumnOffset + $seriesIndex) . '$' . (1 + count($axisYData)) : '');
-            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            if ($subject->getFlippedAxes()) {
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, $coordsX);
+            } else {
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coordsY);
+            }
             $objWriter->endElement();
 
             // c:smooth
