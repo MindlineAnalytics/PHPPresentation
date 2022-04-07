@@ -67,7 +67,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine->addSeries($oSeries);
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
         $oShape->setDisplayBlankAs(Chart::BLANKAS_ZERO);
 
         $element = '/c:chartSpace/c:chart/c:dispBlanksAs';
@@ -108,7 +108,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertTrue($oShape->hasIncludedSpreadsheet());
 
@@ -131,7 +131,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:f';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Sheet1!$A$1');
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Sheet1!$B$1');
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:strCache';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:strCache/c:pt';
@@ -184,7 +184,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
-        $oShape->getPlotArea()->setType($stub);
+        $oShape->getPlotArea()->addType($stub);
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
@@ -196,7 +196,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         // Default
         $this->assertTrue($oShape->getTitle()->isVisible());
@@ -216,7 +216,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         // Set Visible : FALSE
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
@@ -235,7 +235,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:max';
         $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:min';
@@ -283,7 +283,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $elementCrosses = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crosses';
         $elementCrossesAt = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crossesAt';
@@ -331,7 +331,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         // default
         $this->assertFalse($oShape->getPlotArea()->getAxisX()->isReversedOrder());
@@ -362,7 +362,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oBar = new Bar();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oBar->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->addType($oBar);
         $oShape->getPlotArea()->getAxisX()->getFont()->getColor()->setRGB('AABBCC');
         $oShape->getPlotArea()->getAxisX()->getFont()->setItalic(true);
         $oShape->getPlotArea()->getAxisX()->getFont()->setStrikethrough(true);
@@ -408,7 +408,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oBar = new Bar();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oBar->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->addType($oBar);
         $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth($expectedWidthX);
         $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
         $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorX);
@@ -444,7 +444,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_NEXT_TO);
@@ -476,7 +476,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorTickMark';
         $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorTickMark';
@@ -530,7 +530,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->addType($oBar);
 
         $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:bodyPr';
@@ -555,7 +555,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         // Set Visible : FALSE
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(false));
@@ -584,7 +584,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:tickLblSkip';
 
@@ -609,7 +609,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorUnit';
         $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorUnit';
@@ -659,7 +659,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
         $oArea->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oArea);
+        $oShape->getPlotArea()->addType($oArea);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -687,7 +687,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oBar->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->addType($oBar);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -722,7 +722,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oBar3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar3D);
+        $oShape->getPlotArea()->addType($oBar3D);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -749,7 +749,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSubScript(true);
         $oBar3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar3D);
+        $oShape->getPlotArea()->addType($oBar3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -766,7 +766,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSuperScript(true);
         $oBar3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar3D);
+        $oShape->getPlotArea()->addType($oBar3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -790,7 +790,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oDoughnut->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oDoughnut);
+        $oShape->getPlotArea()->addType($oDoughnut);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -838,7 +838,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oBar3D->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oBar3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oBar3D);
+        $oShape->getPlotArea()->addType($oBar3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:barDir';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -855,7 +855,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -912,7 +912,7 @@ class PptChartsTest extends PhpPresentationTestCase
                 'D' => '3',
                 'E' => '2',
             ]));
-            $oShape->getPlotArea()->setType($oLine);
+            $oShape->getPlotArea()->addType($oLine);
             $oGridlines = new Gridlines();
             $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
             $oGridlines->getOutline()->setWidth($expectedSizePts);
@@ -947,7 +947,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol)->setSize($expectedSize);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -995,7 +995,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 12700);
@@ -1017,7 +1017,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
 
@@ -1041,7 +1041,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
@@ -1070,7 +1070,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1085,7 +1085,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $this->resetPresentationFile();
         $oLine->setIsSmooth(true);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1106,7 +1106,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSubScript(true);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1124,7 +1124,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSuperScript(true);
         $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1146,7 +1146,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oPie->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie);
+        $oShape->getPlotArea()->addType($oPie);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -1187,7 +1187,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oPie3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie3D);
+        $oShape->getPlotArea()->addType($oPie3D);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -1214,7 +1214,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oPie3D->setExplosion($value);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oPie3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie3D);
+        $oShape->getPlotArea()->addType($oPie3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:explosion';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1232,7 +1232,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSubScript(true);
         $oPie3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie3D);
+        $oShape->getPlotArea()->addType($oPie3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1250,7 +1250,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSuperScript(true);
         $oPie3D->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie3D);
+        $oShape->getPlotArea()->addType($oPie3D);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1267,7 +1267,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oRadar = new Radar();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oRadar->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oRadar);
+        $oShape->getPlotArea()->addType($oRadar);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -1290,7 +1290,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oScatter = new Scatter();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
@@ -1331,7 +1331,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol)->setSize($expectedSize);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -1379,7 +1379,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', 12700);
@@ -1401,7 +1401,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
 
@@ -1418,7 +1418,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oScatter = new Scatter();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
         $this->assertIsSchemaECMA376Valid();
@@ -1450,7 +1450,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oScatter = new Scatter();
         $oSeries = new Series('Downloads', $this->seriesData);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
@@ -1479,7 +1479,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1494,7 +1494,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $this->resetPresentationFile();
         $oScatter->setIsSmooth(true);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1515,7 +1515,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSubScript(true);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1533,7 +1533,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFont()->setSuperScript(true);
         $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
+        $oShape->getPlotArea()->addType($oScatter);
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -1548,7 +1548,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine = new Line();
         $oLine->addSeries(new Series('Downloads', $this->seriesData));
         $oShape = $oSlide->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->addType($oLine);
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);

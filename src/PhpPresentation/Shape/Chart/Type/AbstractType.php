@@ -29,6 +29,13 @@ use PhpOffice\PhpPresentation\Shape\Chart\Series;
 abstract class AbstractType implements ComparableInterface
 {
     /**
+     * Use primary axis
+     * 
+     * @var bool
+     */
+    protected $isOnPrimaryAxis = true;
+
+    /**
      * Has Axis X?
      *
      * @var bool
@@ -53,6 +60,30 @@ abstract class AbstractType implements ComparableInterface
      * @var array<int, Series>
      */
     private $series = [];
+
+    /**
+     * Get isOnPrimaryAxis
+     * 
+     * @return bool
+     */
+    public function isOnPrimaryAxis(): bool
+    {
+        return $this->isOnPrimaryAxis;
+    }
+
+    /**
+     * Set isOnPrimaryAxis
+     * 
+     * @param bool $isOnPrimaryAxis
+     * 
+     * @return self
+     */
+    public function setIsOnPrimaryAxis( bool $isOnPrimaryAxis = true ): self
+    {
+        $this->isOnPrimaryAxis = $isOnPrimaryAxis;
+        
+        return $this;
+    }
 
     /**
      * Has Axis X?

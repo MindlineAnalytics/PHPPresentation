@@ -23,11 +23,22 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 
 class Axis implements ComparableInterface
 {
+    public const AXIS_IDS = array(
+        'primaryX' => '10000000',
+        'primaryY' => '20000000',
+        'secondaryX' => '30000000',
+        'secondaryY' => '40000000'
+    );
+
     public const AXIS_X = 'x';
     public const AXIS_Y = 'y';
+
+    public const AXIS_TYPE_CATEGORY = 'category';
+    public const AXIS_TYPE_VALUE = 'value';
 
     public const TICK_MARK_NONE = 'none';
     public const TICK_MARK_CROSS = 'cross';
@@ -41,6 +52,25 @@ class Axis implements ComparableInterface
     public const CROSSES_AUTO = 'autoZero';
     public const CROSSES_MIN = 'min';
     public const CROSSES_MAX = 'max';
+
+    /**
+     * @var bool
+     */
+    private $isPrimary = true;
+
+    /**
+     * Axis Type (x or y).
+     *
+     * @var string
+     */
+    private $type = self::AXIS_X;
+
+    /**
+     * Axis Value Type.
+     *
+     * @var string
+     */
+    private $valueType = self::AXIS_TYPE_CATEGORY;
 
     /**
      * Title.
@@ -136,13 +166,107 @@ class Axis implements ComparableInterface
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance.
      *
+     * @param string $axisType Axis type 'x' or 'y'
+     * @param string $axisValueType Axis value type, e.g. 'category' or 'value' - also other types like 'date' might be supported in the future
+     * @param bool $isPrimary Flag if Axis is primary axis
      * @param string $title Title
      */
-    public function __construct(string $title = 'Axis Title')
+    public function __construct(string $axisType = self::AXIS_X, string $axisValueType = self::AXIS_TYPE_CATEGORY, bool $isPrimary = true, string $title = 'Axis Title')
     {
+        $this->setType($axisType);
+        $this->setValueType($axisValueType);
+        $this->isPrimary = $isPrimary;
+
         $this->title = $title;
         $this->outline = new Outline();
         $this->font = new Font();
+    }
+
+    /**
+     * Get internal axis id
+     * 
+     * @return string
+     */
+    public function getId(): string
+    {
+        $axisIdKey = ($this->isPrimary ? 'primary' : 'secondary') . ucfirst($this->type);
+        
+        return self::AXIS_IDS[$axisIdKey];
+    }
+
+    /**
+     * Get internal axis id of crossed axis
+     * 
+     * @return string
+     */
+    public function getCrossedId(): string
+    {
+        $axisIdKey = ($this->isPrimary ? 'primary' : 'secondary') . ucfirst($this->type === self::AXIS_X ? 'y' : 'x');
+
+        return self::AXIS_IDS[$axisIdKey];
+    }
+
+    /**
+     * Get axis type (x or y)
+     * 
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+    
+    /**
+     * Set axis type (x or y)
+     * 
+     * @param string $axisType
+     * 
+     * @return self
+     */
+    public function setType(string $axisType = self::AXIS_X): self
+    {
+        if( !in_array( $axisType, array( self::AXIS_X, self::AXIS_Y ) ) ) {
+            throw new InvalidParameterException( 'axisType', $axisType );
+        }
+        $this->type = $axisType;
+
+        return $this;
+    }
+
+    /**
+     * Get axis value type (category, value)
+     * 
+     * @return string
+     */
+    public function getValueType(): string
+    {
+        return $this->valueType;
+    }
+
+
+    /**
+     * Set axis value type (category, value)
+     * 
+     * @param string $axisValueType
+     * 
+     * @return self
+     */
+    public function setValueType(string $axisValueType = self::AXIS_TYPE_CATEGORY): self
+    {
+        if( !in_array( $axisValueType, array( self::AXIS_TYPE_CATEGORY, self::AXIS_TYPE_VALUE ) ) ) {
+            throw new InvalidParameterException( 'axisValueType', $axisValueType );
+        }
+        $this->valueType = $axisValueType;
+
+        return $this;
+    }
+
+    /**
+     * Get isPrimary
+     */
+    public function isPrimary(): bool
+    {
+        return $this->isPrimary;
     }
 
     /**

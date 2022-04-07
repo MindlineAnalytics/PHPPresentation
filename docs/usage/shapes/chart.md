@@ -37,6 +37,42 @@ echo $chart->getDisplayBlankAs();
 
 ### Axis
 
+The axis components are handled within the `PlotArea` of a chart. Depending on the chart types added, the `PlotArea` can hold up to four different axes, an x-axis and a y-axis each for both the primary and secondary coordinate system.
+
+``` php
+<?php
+$bar = new Bar();
+$shape->getPlotArea()->addType($bar);
+// returns the primary X-axis
+$shape->getPlotArea()->getPrimaryAxisX()
+// returns the primary Y-axis
+$shape->getPlotArea()->getPrimaryAxisY()
+```
+
+The secondary coordinate system and axes will be instanciated, if a chart, using the secondary system, is added.
+
+``` php
+<?php
+$bar = new Bar();
+$shape->getPlotArea()->addType($bar);
+
+// returns `null`
+$shape->getPlotArea()->getSecondaryAxisX()
+
+$line = new Line();
+// check if chart uses primary (true) or secondary (false) coordinate systems axes
+$line->isOnPrimaryAxis(); // returns true
+
+// set line chart to use secondary axis
+$line->setIsOnPrimaryAxis(false);
+$shape->getPlotArea()->addType($line);
+
+// returns the secondary X-axis
+$shape->getPlotArea()->getSecondaryAxisX()
+// returns the secondary Y-axis
+$shape->getPlotArea()->getSecondaryAxisY()
+```
+
 #### Title
 
 You can define title for each axis (X & Y) with `setTitle` method.
@@ -50,7 +86,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 
 $shape->getPlotArea()->getAxisX()->setTitle('Axis X');
 $shape->getPlotArea()->getAxisX()->setTitleRotation(45);
@@ -73,7 +109,7 @@ $gridlines->getOutline()->setWidth(10);
 $gridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisX()->setMajorGridlines($gridlines);
 ```
 
@@ -90,7 +126,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisX()->setMinBounds(0);
 $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 ```
@@ -110,7 +146,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 $bar = new Bar();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($bar);
+$shape->getPlotArea()->addType($bar);
 
 // Usage of constant: Horizontal axis will cross the Y-Axis at `0`
 $shape->getPlotArea()->getAxisY()->setCrossesAt(Axis::CROSSES_AUTO);
@@ -139,7 +175,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 $bar = new Bar();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($bar);
+$shape->getPlotArea()->addType($bar);
 
 // default value, will return false
 $shape->getPlotArea()->getAxisY()->isReversedOrder()
@@ -161,7 +197,7 @@ You can define outline for each axis (X & Y).
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
 $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 ```
@@ -184,7 +220,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
 ```
 #### Tick Marks
@@ -200,7 +236,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisY()->setMinorTickMark(Axis::TICK_MARK_NONE);
 $shape->getPlotArea()->getAxisY()->setMajorTickMark(Axis::TICK_MARK_INSIDE);
 ```
@@ -218,7 +254,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisY()->setMinorUnit(null);
 $shape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
 ```
@@ -232,7 +268,7 @@ You can define visibility for each axis (X & Y).
 $line = new Line();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 $shape->getPlotArea()->getAxisX()->setIsVisible(false);
 ```
 
@@ -246,7 +282,7 @@ For hiding it, you define its visibility to false.
 
 $line = new Line();
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->addType($line);
 // Hide the title
 $shape->getTitle()->setVisible(false);
 ```
@@ -467,7 +503,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 $radarChart = new Radar();
 
 $shape = $slide->createChartShape();
-$shape->getPlotArea()->setType($radarChart);
+$shape->getPlotArea()->addType($radarChart);
 ```
 
 ### Scatter
