@@ -125,6 +125,13 @@ class Series implements ComparableInterface
     private $showValue = true;
 
     /**
+     * DeleteLegendEntry - if true, the series label will be removed from the lengend.
+     *
+     * @var bool
+     */
+    private $deleteLegendEntry = false;
+
+    /**
      * Title.
      *
      * @var string
@@ -383,6 +390,32 @@ class Series implements ComparableInterface
     {
         return $this->separator;
     }
+
+
+    /**
+     * Get DeleteLegendEntry.
+     * 
+     * @return bool
+     */
+    public function hasDeleteLegendEntry(): bool
+    {
+        return $this->deleteLegendEntry;
+    }
+
+    /**
+     * Set DeleteLegendEntry.
+     * 
+     * @param bool $value
+     * 
+     * @return self
+     */
+    public function setDeleteLegendEntry(bool $value): self
+    {
+        $this->deleteLegendEntry = $value;
+
+        return $this;
+    }
+
 
     /**
      * Get ShowLeaderLines.

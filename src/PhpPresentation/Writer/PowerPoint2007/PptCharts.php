@@ -157,7 +157,7 @@ class PptCharts extends AbstractDecoratorWriter
         // Legend?
         if ($chart->getLegend()->isVisible()) {
             // Write legend
-            $this->writeLegend($objWriter, $chart->getLegend());
+            $this->writeLegend($objWriter, $chart);
         }
 
         // c:plotVisOnly
@@ -584,12 +584,28 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Legend.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Chart\Legend $subject
+     * @param Chart $chart
      */
-    protected function writeLegend(XMLWriter $objWriter, Legend $subject): void
+    protected function writeLegend(XMLWriter $objWriter, Chart $chart): void
     {
+        $subject = $chart->getLegend();
+
         // c:legend
         $objWriter->startElement('c:legend');
+
+        // c:legendEntry
+        $seriesIndex = 0;
+        foreach ($chart->getPlotArea()->getTypes() as $chartType) {
+            foreach ($chartType->getSeries() as $series) {
+                if( $series->hasDeleteLegendEntry() === true ) {
+                    $objWriter->startElement('c:legendEntry');
+                    $this->writeElementWithValAttribute($objWriter, 'c:idx', "$seriesIndex");
+                    $this->writeElementWithValAttribute($objWriter, 'c:delete', '1');
+                    $objWriter->endElement();
+                }
+                ++$seriesIndex;
+            }
+        }
 
         // c:legendPos
         $objWriter->startElement('c:legendPos');
